@@ -47,8 +47,8 @@ public class LoginTests extends TestBase {
     public void negativeLogin2(){
 
         LoginPage1 loginPage = new LoginPage1();
-        loginPage.enterUsername(ConfigReader.getProperty(""));
-        loginPage.enterPassword(ConfigReader.getProperty(""));
+        loginPage.enterUsername("");
+        loginPage.enterPassword("");
         loginPage.clickLoginButton();
         Assert.assertNotEquals( Driver.getDriver().getTitle(), "Web Orders");
 

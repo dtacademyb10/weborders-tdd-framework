@@ -3,6 +3,7 @@ package pages;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import utils.ConfigReader;
 import utils.Driver;
 
 public class LoginPage {
@@ -31,6 +32,14 @@ public class LoginPage {
 
         public void clickLoginButton(){
         button.click();
+        }
+
+
+        public void login(){
+            this.username.sendKeys(ConfigReader.getProperty("username"));
+            this.password.sendKeys(ConfigReader.getProperty("password"));
+            this.button.click();
+
         }
 
 

@@ -1,5 +1,6 @@
 package pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -19,6 +20,10 @@ public class AllOrdersPage {
     @FindBy(name="ctl00_MainContent_orderMessage")
     private WebElement message;
 
+
+
+
+
     public WebElement getMessage() {
         return message;
     }
@@ -29,6 +34,11 @@ public class AllOrdersPage {
 
     public void clickDeleteSelected(){
         deleteSelectedButton.click();
+    }
+
+    public void clickOnLink(String linkText){
+        String xpath = "//a[.='"+linkText+"']";
+        Driver.getDriver().findElement(By.xpath(xpath)).click();
     }
 
 }
