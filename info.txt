@@ -1,0 +1,14 @@
+TDD(Test Driven Development) Framework - TestNG based framework
+
+Steps of creating TestNG based framework from scratch:
+
+1. Create a maven project
+2. Add project specific dependencies
+3. Add .gitignore
+4. Create the package structure
+5. Add TestBase and necessary test classes (don't forget to extend your test classes from TestBase)
+6. Add testng.xml file to configure different test runs
+7. Add .properties file with project specific global properties like urls, username, passwords ,etc.
+   (never hardcode properties like urls, passwords, api keys into the code, rather use properties file)
+8. Add the utility class to read from the property file (ConfigReader)
+9.
