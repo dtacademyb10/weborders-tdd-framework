@@ -22,7 +22,7 @@ public class TestBase {
     public void setUpEachMethod() throws IOException {
 
         Driver.getDriver().manage().window().maximize();
-        Driver.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+        Driver.getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
         Driver.getDriver().get(ConfigReader.getProperty("homepage"));
     }
 
