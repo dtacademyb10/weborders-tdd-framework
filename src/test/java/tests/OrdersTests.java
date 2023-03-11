@@ -6,6 +6,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pages.AllOrdersPage;
+import pages.LoginPage;
 import utils.ConfigReader;
 import utils.Driver;
 
@@ -17,14 +19,19 @@ public class OrdersTests extends TestBase{
     public void deleteSelectedButtonTest(){
 
 
-        Driver.getDriver().findElement(By.id("ctl00_MainContent_username")).sendKeys(ConfigReader.getProperty("username"));
-        Driver.getDriver().findElement(By.name("ctl00$MainContent$password")).sendKeys(ConfigReader.getProperty("password"));
-        Driver.getDriver().findElement(By.className("button")).click();
+        LoginPage loginPage = new LoginPage();
 
-        Driver.getDriver().findElement(By.id("ctl00_MainContent_btnCheckAll")).click();
-        Driver.getDriver().findElement(By.name("ctl00$MainContent$btnDelete")).click();
+        loginPage.enterUsername(ConfigReader.getProperty("username"));
+        loginPage.enterPassword(ConfigReader.getProperty("password"));
+        loginPage.clickLoginButton();
 
-        Assert.assertTrue( Driver.getDriver().getPageSource().contains("List of orders is empty."));
+        AllOrdersPage allOrdersPage = new AllOrdersPage();
+        allOrdersPage.clickCheckAll();
+        allOrdersPage.clickDeleteSelected();
+
+        Assert.assertTrue(allOrdersPage.getMessage().isDisplayed());
+
+
 
     }
 }
