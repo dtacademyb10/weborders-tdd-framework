@@ -14,3 +14,4 @@ Steps of creating TestNG based framework from scratch:
 9. Add the Driver utility class that is implemented using Singleton design pattern
 10. Start creating the Page classes for each page of the application and add the WebElements and related methods
 11. Create test cases using the Page classes and their methods
+12. Add Selenium Utility class for re-usable selenium methods and add more methods as needed as you progress in your progress
