@@ -11,4 +11,4 @@ Steps of creating TestNG based framework from scratch:
 7. Add .properties file with project specific global properties like urls, username, passwords ,etc.
    (never hardcode properties like urls, passwords, api keys into the code, rather use properties file)
 8. Add the utility class to read from the property file (ConfigReader)
-9.
+9. Add a utility class Driver that is implemented using Singleton design pattern
