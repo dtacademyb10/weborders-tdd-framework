@@ -10,12 +10,13 @@ import pages.AllOrdersPage;
 import pages.LoginPage;
 import utils.ConfigReader;
 import utils.Driver;
+import utils.SeleniumUtils;
 
 public class OrdersTests extends TestBase{
 
 
 
-    @Test
+    @Test (groups = {"smoke"})
     public void deleteSelectedButtonTest(){
 
 
@@ -28,6 +29,7 @@ public class OrdersTests extends TestBase{
         AllOrdersPage allOrdersPage = new AllOrdersPage();
         allOrdersPage.clickCheckAll();
         allOrdersPage.clickDeleteSelected();
+        SeleniumUtils.waitForVisibility(allOrdersPage.getMessage(), 5);
 
         Assert.assertTrue(allOrdersPage.getMessage().isDisplayed());
 

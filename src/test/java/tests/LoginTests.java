@@ -11,7 +11,7 @@ import utils.Driver;
 public class LoginTests extends TestBase {
 
 
-    @Test
+    @Test (groups = {"smoke"})
     public void positiveLoginPageObjectModel(){
 
         LoginPage1 loginPage = new LoginPage1();
@@ -32,8 +32,9 @@ public class LoginTests extends TestBase {
 
     }
 
-    @Test
+    @Test (groups = {"smoke"})
     public void negativeLogin(){
+
 
         LoginPage loginPage = new LoginPage();
         loginPage.enterPassword("dssd");

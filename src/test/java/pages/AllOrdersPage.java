@@ -17,7 +17,7 @@ public class AllOrdersPage {
     @FindBy(name="ctl00$MainContent$btnDelete")
     private WebElement deleteSelectedButton;
 
-    @FindBy(name="ctl00_MainContent_orderMessage")
+    @FindBy(id="ctl00_MainContent_orderMessage")
     private WebElement message;
 
 

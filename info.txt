@@ -15,3 +15,24 @@ Steps of creating TestNG based framework from scratch:
 10. Start creating the Page classes for each page of the application and add the WebElements and related methods
 11. Create test cases using the Page classes and their methods
 12. Add Selenium Utility class for re-usable selenium methods and add more methods as needed as you progress in your progress
+
+
+Page Object Model - a design pattern that simplifies writing UI tests by creating a separate Page Classes where the elements of the page and actions on those webelements are stored.
+We usually use Page Object Model along with Page Factory where we use @FindBy annotations and a constructor with factory method PageFactory.initElements() method.
+
+Singleton Design Pattern -> A design pattern where an instantiation of a class is restricted to only one object.
+                           An example could be the Driver class where the Webdriver instantiation is done by getDriver() method that checks if the the WebDriver obj is already initialized.
+                           The purpose of using this pattern is to prevent multiple WebDriver objects being initialized.
+
+Page Object Model Design Pattern -> A design pattern specific to Selenium based test frameworks which is implemented by creating a separate class for each page of our
+                                    application which stores the page web elements and methods.
+                                    The purpose is re-usability, maintainability and readability.
+PageFactory design pattern ->      This pattern uses @FindBy annotations to locate the elements and makes our Page classes more readable and concise.
+                                   We implement it by using PageFactory.initElements() method in a constructor of the page class
+                                   We also can use @FindBys to create chained matches and @FindAll to match multiple webelements on the page
+
+
+To run tests thru CMD in our framework:
+1. Add Maven Surefire plugin to the pom.xml
+2. Configure it to run
+
