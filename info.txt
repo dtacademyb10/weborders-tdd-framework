@@ -32,7 +32,23 @@ PageFactory design pattern ->      This pattern uses @FindBy annotations to loca
                                    We also can use @FindBys to create chained matches and @FindAll to match multiple webelements on the page
 
 
-To run tests thru CMD in our framework:
+To run tests thru CMD in TestNG framework:
+
 1. Add Maven Surefire plugin to the pom.xml
-2. Configure it to run
+2. Configure it to run different xml files.
+   Add the following configuration:
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.0.0</version>
+                    <configuration>
+                        <suiteXmlFiles>
+                            <suiteXmlFile>${xmlFile}</suiteXmlFile>
+                        </suiteXmlFiles>
+                    </configuration>
+                </plugin>
+
+3. In the command line run the tests with the -D switch, indicating the value for placeholder:
+         mvn test -D xmlFile=regression-suite.xml
+   or    mvn test -D xmlFile=smoke-test-suite.xml
 

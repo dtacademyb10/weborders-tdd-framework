@@ -49,7 +49,8 @@
                     <version>3.0.0</version>
                     <configuration>
                         <suiteXmlFiles>
-                            <suiteXmlFile>smoke-test-suite.xml</suiteXmlFile>
+                            <!--suppress UnresolvedMavenProperty -->
+                            <suiteXmlFile>${xmlFile}</suiteXmlFile>
                         </suiteXmlFiles>
 
                     </configuration>
