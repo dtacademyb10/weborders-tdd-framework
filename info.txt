@@ -43,7 +43,7 @@ To run tests thru CMD in TestNG framework:
                     <version>3.0.0</version>
                     <configuration>
                         <suiteXmlFiles>
-                            <suiteXmlFile>${xmlFile}</suiteXmlFile>
+                            <suiteXmlFile>${xmlFile}</suiteXmlFile>   // syntax for the name of the placeholder -> ${placeholderName}
                         </suiteXmlFiles>
                     </configuration>
                 </plugin>

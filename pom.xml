@@ -35,6 +35,20 @@
             <version>4.8.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>5.0.9</version>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>2.11.0</version>
+        </dependency>
+
+
+
     </dependencies>
 
 
@@ -52,6 +66,11 @@
                             <!--suppress UnresolvedMavenProperty -->
                             <suiteXmlFile>${xmlFile}</suiteXmlFile>
                         </suiteXmlFiles>
+
+<!--                        <suiteXmlFiles>-->
+<!--                            you can also hardcode the xml file name here -->
+<!--                            <suiteXmlFile>regression-suite.xml</suiteXmlFile>-->
+<!--                        </suiteXmlFiles>-->
 
                     </configuration>
                 </plugin>

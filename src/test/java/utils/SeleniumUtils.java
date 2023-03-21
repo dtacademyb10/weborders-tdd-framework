@@ -1,5 +1,6 @@
 package utils;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.*;
@@ -127,10 +128,26 @@ public class SeleniumUtils {
     public static void takeScreenshot(String nameOFFile){
         byte[] screenshotAsFiles = ((TakesScreenshot) Driver.getDriver()).getScreenshotAs(OutputType.BYTES);
         try {
-            Files.write(Path.of(nameOFFile),screenshotAsFiles);
+            Path write = Files.write(Path.of(nameOFFile), screenshotAsFiles);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+
+    public static String getScreenshot(String name)  {
+        TakesScreenshot ts = (TakesScreenshot) Driver.getDriver();
+        File source = ts.getScreenshotAs(OutputType.FILE);
+        String date = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date());
+        String fileName = name + date + ".png";
+        String target = System.getProperty("user.dir") + "/target/extentReports/" + fileName;
+        File finalDestination = new File(target);
+        try {
+            FileUtils.copyFile(source, finalDestination);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return fileName;
     }
     public static void scroll(int horizontalAxis, int verticalAxis) {
         JavascriptExecutor js = (JavascriptExecutor)Driver.getDriver();

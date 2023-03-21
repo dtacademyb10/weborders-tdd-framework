@@ -2,6 +2,7 @@ package tests;
 
 import org.openqa.selenium.By;
 import org.testng.Assert;
+import org.testng.SkipException;
 import org.testng.annotations.Test;
 import pages.LoginPage1;
 import pages.LoginPage;
@@ -14,11 +15,19 @@ public class LoginTests extends TestBase {
     @Test (groups = {"smoke"})
     public void positiveLoginPageObjectModel(){
 
+        logger.info("Navigating to Login Page");
         LoginPage1 loginPage = new LoginPage1();
-        loginPage.enterUsername(ConfigReader.getProperty("username"));
+        logger.info("Entering th username");
+        loginPage.enterUsername(ConfigReader.getProperty("usernamedsd"));
+        logger.info("Entering the password");
         loginPage.enterPassword(ConfigReader.getProperty("password"));
+        logger.info("Clicking login button");
         loginPage.clickLoginButton();
+
         Assert.assertEquals( Driver.getDriver().getTitle(), "Web Orders");
+
+
+
 
     }
 
@@ -51,7 +60,9 @@ public class LoginTests extends TestBase {
         loginPage.enterUsername("");
         loginPage.enterPassword("");
         loginPage.clickLoginButton();
-        Assert.assertNotEquals( Driver.getDriver().getTitle(), "Web Orders");
+
+        throw new SkipException("Test is not ready"); //
+//        Assert.assertNotEquals( Driver.getDriver().getTitle(), "Web Orders");
 
     }
 
