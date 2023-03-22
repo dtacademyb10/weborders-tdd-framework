@@ -4,7 +4,6 @@ import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.Test;
-import pages.LoginPage1;
 import pages.LoginPage;
 import utils.ConfigReader;
 import utils.Driver;
@@ -16,7 +15,7 @@ public class LoginTests extends TestBase {
     public void positiveLoginPageObjectModel(){
 
         logger.info("Navigating to Login Page");
-        LoginPage1 loginPage = new LoginPage1();
+        LoginPage loginPage = new LoginPage();
         logger.info("Entering th username");
         loginPage.enterUsername(ConfigReader.getProperty("usernamedsd"));
         logger.info("Entering the password");
@@ -56,13 +55,13 @@ public class LoginTests extends TestBase {
     @Test
     public void negativeLogin2(){
 
-        LoginPage1 loginPage = new LoginPage1();
+        LoginPage loginPage = new LoginPage();
         loginPage.enterUsername("");
         loginPage.enterPassword("");
         loginPage.clickLoginButton();
 
-        throw new SkipException("Test is not ready"); //
-//        Assert.assertNotEquals( Driver.getDriver().getTitle(), "Web Orders");
+        throw new SkipException("Test is not ready"); // to explicitly skip the test rather than executing and having the result as a failure
+
 
     }
 
