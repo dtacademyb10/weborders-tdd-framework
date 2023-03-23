@@ -14,11 +14,11 @@ public class Driver {
 
     // This class uses Singleton Design pattern which ensures that during the execution of any test
     // there is going to be only a single active browser, it prevents the multiple browser initialization issue common in test frameworks
-    private static WebDriver driver;
+    private static ThreadLocal<WebDriver> drivers =  new ThreadLocal<>();
 
     private Driver(){} //to prevent instantiation
 
-    public static WebDriver getDriver(){
+    public static synchronized WebDriver getDriver(){
 
 
         String browser = System.getProperty("browser"); // read the browser value from the command line
@@ -28,39 +28,39 @@ public class Driver {
         }
 
 
-        if(driver == null) { // check if the driver is initialized
+        if(drivers.get() == null) { // check if the driver is initialized
 
            // if not, initialize using the value from properties file
             switch (browser) {
                 case "chrome":
                     ChromeOptions options = new ChromeOptions();
                     options.addArguments("--remote-allow-origins=*");
-                    driver = new ChromeDriver(options);
+                    drivers.set(new ChromeDriver(options));
                     break;
                 case "headlessChrome":
                     ChromeOptions chromeOptions = new ChromeOptions();
                     chromeOptions.addArguments("--remote-allow-origins=*");
                     chromeOptions.addArguments("--headless");
-                    driver = new ChromeDriver(chromeOptions);
+                    drivers.set(new ChromeDriver(chromeOptions));
                     break;
                 case "edge":
-                    driver = new EdgeDriver();
+                    drivers.set(new EdgeDriver());
                     break;
                 case "headlessEdge":
                     EdgeOptions edgeOptions = new EdgeOptions();
                     edgeOptions.addArguments("--headless");
-                    driver = new EdgeDriver(edgeOptions);
+                    drivers.set(new EdgeDriver(edgeOptions));
                     break;
                 case "firefox":
-                    driver = new FirefoxDriver();
+                    drivers.set(new FirefoxDriver());
                     break;
                 case "headlessFirefox":
                     FirefoxOptions firefoxOptions = new FirefoxOptions();
                     firefoxOptions.addArguments("--headless");
-                    driver = new FirefoxDriver(firefoxOptions);
+                    drivers.set(new FirefoxDriver(firefoxOptions));
                     break;
                 case "safari":
-                    driver = new SafariDriver();
+                    drivers.set(new SafariDriver());
                     break;
                 default:
                     throw new RuntimeException("Unsupported browser");
@@ -70,15 +70,15 @@ public class Driver {
 
         }
 
-        return driver; // if already initialized previously, return this initialized object
+        return  drivers.get(); // if already initialized previously, return this initialized object
     }
 
 
-    public static void quitDriver(){
+    public synchronized static void quitDriver(){
 
-         if(driver != null){  // if the driver is active
-             driver.quit();  // quit the driver
-             driver = null;  // set the driver variable value to null because next initialization of driver checks if it is null
+         if(drivers.get() != null){  // if the driver is active
+             drivers.get().quit();  // quit the driver
+             drivers.remove();  // set the driver variable value to null because next initialization of driver checks if it is null
          }
 
     }
