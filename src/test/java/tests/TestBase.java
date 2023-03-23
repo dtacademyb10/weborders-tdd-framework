@@ -30,13 +30,22 @@ public class TestBase {
     protected static ExtentSparkReporter htmlReport; // generates the html report
     protected static ExtentTest logger; // manages the individual test steps and logs
 
-    @BeforeSuite
+    @BeforeSuite (alwaysRun = true)
     public void setupReport(){
         extentReport = new ExtentReports();
         String path = System.getProperty("user.dir") + "/target/extentReports/report.html";
         System.out.println(path);
         htmlReport =  new ExtentSparkReporter(path);
         extentReport.attachReporter(htmlReport);
+
+        extentReport.setSystemInfo("Name", "Web Orders Automated Tests");
+        extentReport.setSystemInfo("SDET", "John Doe");
+        extentReport.setSystemInfo("Environment", ConfigReader.getProperty("env"));
+        extentReport.setSystemInfo("Browser", ConfigReader.getProperty("browser"));
+        extentReport.setSystemInfo("OS", System.getProperty("os.name"));
+        extentReport.setSystemInfo("URL", ConfigReader.getProperty("homepage"));
+
+
     }
 
     @BeforeMethod (alwaysRun = true)
@@ -49,7 +58,7 @@ public class TestBase {
     }
 
     @AfterMethod (alwaysRun = true)
-    public void tearDownMethod(ITestResult testResult){
+    public void tearDownMethod(ITestResult testResult){ //ITestResult is a listener interface that stores the information about the test result
 
         if(testResult.getStatus() == ITestResult.SUCCESS){
             logger.pass("TEST PASSED.");
@@ -67,7 +76,7 @@ public class TestBase {
     }
 
 
-    @AfterSuite
+    @AfterSuite (alwaysRun = true)
     public void tearDownReport(){
         extentReport.flush();
     }
