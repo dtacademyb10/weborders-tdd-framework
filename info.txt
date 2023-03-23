@@ -52,3 +52,26 @@ To run tests thru CMD in TestNG framework:
          mvn test -D xmlFile=regression-suite.xml
    or    mvn test -D xmlFile=smoke-test-suite.xml
 
+
+
+   Cross-browser testing       ->    We implement it in our framework by passing the browser type through command line like: mvn test -D browser=chrome
+                                     And we simply execute multiple commands for different browser types
+                                     We can use batch file/shell script file to execute all commands at once
+
+
+  Parallel Tests - running groups of tests in parallel to reduce execution time and get faster feedback
+                     How to implement:
+                     1. Setup Selenium Grid with Hub and multiple nodes and direct your tests to the central Hub which automatically distributes
+                        the tests among nodes.
+                        Pros: More scalable, reliable, little maintenance after initial setup.
+                        Cons: Complex to setup, can be more costly than native setup, especially when using third party cloud services
+                               such as SauceLabs, BrowserStack.
+                     2. Setup natively through TestNG xml file.
+                        a)Add parallel attribute to <suite> tag along with thread-count attribute where you indicate the amount of threads
+                        Default thread-count is 5 if not given.
+                        Parallel attribute can take methods, classes and tests.
+                        2)Adjust the singleton Driver class with ThreadLocal<WebDriver> to give each thread its own WebDriver
+    Re-run failed
+    tests          -  Let's say you have 800 tests in your regression suite and 10 of them failed. How to re-run those 10 without running all of them again?
+                      TestNG automatically generates testng-failed.xml file in surefire-reports folder, I locate and run that file.
+

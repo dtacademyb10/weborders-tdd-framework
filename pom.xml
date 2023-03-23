@@ -47,6 +47,14 @@
             <version>2.11.0</version>
         </dependency>
 
+<!--        added this to remove the error when running tests thru command line-->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <optional>true</optional>
+        </dependency>
+
 
 
     </dependencies>

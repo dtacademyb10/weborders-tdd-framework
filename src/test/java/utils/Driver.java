@@ -20,7 +20,13 @@ public class Driver {
 
     public static WebDriver getDriver(){
 
-        String browser = ConfigReader.getProperty("browser");
+
+        String browser = System.getProperty("browser"); // read the browser value from the command line
+
+        if (browser == null){ // if no browser is passed from cmd
+            browser = ConfigReader.getProperty("browser"); // read the browser from config.properties
+        }
+
 
         if(driver == null) { // check if the driver is initialized
 
