@@ -15,7 +15,11 @@ Steps of creating TestNG based framework from scratch:
 10. Start creating the Page classes for each page of the application and add the WebElements and related methods
 11. Create test cases using the Page classes and their methods
 12. Add Selenium Utility class for re-usable selenium methods and add more methods as needed as you progress in your progress
-
+13. Add Extent report dependency and configure Test Base class for the report generation
+14. Configure the Driver class to add headless browser options for each browser
+15. Add a support for Cross-Browser testing
+16. Add a support for Parallel Testing
+17. Add a support for running tests through CMD by configuring the Maven Surefire plugin in pom.xml
 
 Page Object Model - a design pattern that simplifies writing UI tests by creating a separate Page Classes where the elements of the page and actions on those webelements are stored.
 We usually use Page Object Model along with Page Factory where we use @FindBy annotations and a constructor with factory method PageFactory.initElements() method.
@@ -53,10 +57,18 @@ To run tests thru CMD in TestNG framework:
    or    mvn test -D xmlFile=smoke-test-suite.xml
 
 
+Cross-Browser Testing - Cross-browser testing involves testing web applications on multiple web browsers, such as Chrome, Firefox, Safari, and Edge, to ensure that the application behaves consistently across different browsers.
+This is important because different browsers may interpret HTML, CSS, and JavaScript differently, which can lead to inconsistencies in the application's behavior.
+Cross-browser testing helps to ensure that the application works as expected on all major browsers, improving the user experience and reducing the risk of bugs and errors.
 
    Cross-browser testing       ->    We implement it in our framework by passing the browser type through command line like: mvn test -D browser=chrome
                                      And we simply execute multiple commands for different browser types
                                      We can use batch file/shell script file to execute all commands at once
+
+
+Parallel Testing: Parallel testing involves running multiple automated tests simultaneously on different machines or different threads of the same machine.
+This approach can help to speed up the testing process, as multiple tests can be executed at the same time, rather than waiting for each test to finish before starting the next one.
+Parallel testing is especially useful when dealing with large test suites like regression suite that takes a long time to run.
 
 
   Parallel Tests - running groups of tests in parallel to reduce execution time and get faster feedback
@@ -70,8 +82,165 @@ To run tests thru CMD in TestNG framework:
                         a)Add parallel attribute to <suite> tag along with thread-count attribute where you indicate the amount of threads
                         Default thread-count is 5 if not given.
                         Parallel attribute can take methods, classes and tests.
-                        2)Adjust the singleton Driver class with ThreadLocal<WebDriver> to give each thread its own WebDriver
-    Re-run failed
-    tests          -  Let's say you have 800 tests in your regression suite and 10 of them failed. How to re-run those 10 without running all of them again?
-                      TestNG automatically generates testng-failed.xml file in surefire-reports folder, I locate and run that file.
+                        2)Adjust the singleton Driver class with ThreadLocal<WebDriver> to give each thread its own WebDriver,
+                           And we made the initialization and quitting methods of drivers synchronized
+
+
+
+In Java, synchronization refers to the process of controlling the access of multiple threads to shared resources, such as variables, methods, or blocks of code.
+When multiple threads access shared resources simultaneously, it can lead to race conditions, data inconsistency, and other problems.
+Synchronization ensures that your code is thread-safe and only one thread at a time can access the shared resources, preventing these issues. In Java methods and code blocks can be synchronized.
+
+
+Can you explain your framework?
+
+More general -> more specific
+
+Description -> Components -> Architecture -> Specific packages -> Classes/Utilities
+
+TDD stands for Test-Driven Development, which is a software development methodology that involves writing automated tests before writing the actual code. The purpose of TDD is to ensure that the code is working as expected, and to catch any bugs or errors early in the development cycle.
+Examples of TDD frameworks is TestNG or JUnit based test automation frameworks.
+
+TestNG Based TDD Framework components:
+
+- Java -> write the test code
+- Maven -> manage dependencies, define structure, run the tests from command line
+- TestNG -> configure the tests using annotations and xml file, runs the tests
+- Selenium WebDriver -> to automate UI tests
+- Extent Report -> generate HTML reports and logs
+- Faker - generate random mock/fake data to be used in test cases
+- IntelliJ -> to develop and modify the test scripts
+- config.properties -> store project specific settings, global variables and data
+- .gitignore -> prevent certain files/folders from being pushed to GitHub
+- testng.xml -> configure our test runs
+- Utility classes (SeleniumUtils(stores re-usable Selenium methods), Driver(manages webdriver), ConfigReader(reads the data from .properties file))
+
+
+Architecture of the framework:
+
+- package structure
+- design patterns: Page Object Model, Page Factory, Singleton
+- OOP principles: Encapsulation(Page Classes), Inheritance (Test Base), Polymorphism (WebDriver driver =  new ChromeDriver()), Abstraction
+
+
+
+Types of tests the framework supports:
+  Smoke,
+  Regression,
+  Functional,
+  Integration,
+  UI,DB,API
+  Cross Browser,
+  Headless browser,
+  Parallel,
+  Data-Driven tests
+  End-to-end tests
+
+Regression Test Suite: A regression test suite is a collection of automated tests that are designed to verify that changes or updates to an application have not introduced any new defects or bugs.
+Regression tests are typically run after a new feature or a major bug fix has been implemented, to ensure that the existing functionality of the application has not been impacted.
+Regression tests are usually more comprehensive and cover a larger area of the application compared to other types of tests, as they need to ensure that the application is still functioning correctly even after changes have been made.
+
+Smoke Test Suite: A smoke test suite is a set of basic, high-level tests that are designed to quickly verify that the major functionalities of an application are working as expected.
+Smoke tests are usually run after a new build or release of an application to ensure that the application is stable enough to proceed with further testing.
+Smoke tests are typically run first and quickly to catch any major issues before running more comprehensive tests.
+
+
+Data-driven testing (DDT) is a software testing technique in which test cases are designed to use input data stored in external data sources such as excel files, CSV files, databases, or XML files.
+This approach allows testers to execute the same test case with different sets of input data, making it easier to validate the behavior of the application under different conditions.
+In data-driven testing, the test cases are designed in a way that they are separated from the test data.
+Test data is stored in a separate file or database and the test case reads the input data from these sources.
+The input data may include values such as usernames, passwords, search keywords, or any other type of input that the application requires.
+By using different sets of test data, testers can verify that the application behaves correctly under different conditions.
+
+Implementing data-driven testing in TestNG:
+
+Define Test Data: Identify the test data that will be used for the test. This data can be stored in a separate file or database.
+Create a Test Method: Create a test method in TestNG that will use the test data as input parameters. The test method should use dataProvider attribute, which will specify the source of the test data.
+Define a Data Provider: Create a data provider method that will supply the test data to the test method. The data provider method should be annotated with the @DataProvider annotation and should return a two-dimensional array of test data.
+Use Test Data in Test Method: In the test method, access the test data using the input parameters specified in the data provider method.
+Run the Test: Run the test method using TestNG, which will execute the test method with the different sets of input data supplied by the data provider.
+
+Example:
+@Test(dataProvider = "testData")
+public void testLogin(String username, String password) {
+    // test login with the provided username and password
+}
+@DataProvider
+public Object[][] testData() {
+    Object[][] data = {
+                        {"user1", "password1"},
+                        {"user2", "password2"}
+                       };
+    return data;
+}
+
+
+How did you implement reporting in your framework?
+
+We used Extent report for generating a visual HTML report.
+
+Extent Report is a popular reporting library for test automation frameworks that provides detailed and customizable reports for test results.
+With Extent Report, automated tests can generate HTML reports that provide detailed information about the test results, including test pass/fail status, screenshots, error messages, logs and more.
+These reports can help  QA team quickly identify issues and make decisions about how to improve the application.
+
+Allure is another popular reporting library
+
+
+Can you tell me about TestNg listeners? What listener have you used in your framework?
+
+TestNG provides a feature called listeners which allows you to monitor and control the behavior of TestNG tests.
+TestNG provides several built-in listener interfaces that you can use out-of-the-box, including ITestListener, ISuiteListener, IReporter, ITestResult, etc
+
+ITestResult is a listener interface provided by TestNG, which allows you to monitor the results of the test methods that are executed during a test run.
+When a test method is executed, the TestNG framework automatically creates an object of the ITestResult interface and passes it as an argument to the corresponding method.
+
+We used the ITestResult listener interface in our framework in the @AfterMethod to set the result of the test in the HTML report and to attach the error message and the screenshot.
+
+
+Maven related interview questions:
+
+What maven commands have you used?
+mvn test
+
+
+Maven dependency vs maven plugin (surefire)?
+
+Maven dependency (e.g. webdriver) - any library that is needed for our framework
+Maven plugin (e.g. surefire) - maven specific tools that perform maven related actions
+
+
+
+In Maven, a lifecycle is a sequence of phases that represent the stages of a project's build process.
+Each phase in the lifecycle represents a different stage of the build process and is responsible for a specific task.
+
+The following are the standard Maven lifecycles:
+
+1.Clean Lifecycle: This lifecycle is responsible for cleaning the project's output directories and removing any generated files.
+2.Default Lifecycle: This is the most important lifecycle in Maven, responsible for building and deploying the project. It includes the following phases:
+    a. Validate: Validates the project structure and dependencies.
+    b. Compile: Compiles the source code of the project.
+    c. Test: Runs the tests of the project.
+    d. Package: Packages the compiled code and resources into a distributable format, such as a JAR or WAR file.
+    e. Verify: Runs any checks to verify the package is valid and meets quality standards.
+    f. Install: Installs the package into the local Maven repository for use as a dependency in other projects.
+    g. Deploy: Copies the final package to the remote repository for sharing with other developers and projects.
+3. Site Lifecycle: This lifecycle is responsible for generating project documentation and reports.
+
+Each lifecycle consists of a set of predefined phases that are executed in order. Maven plugins bind to these phases to perform their respective tasks. The phases within a lifecycle are executed in a specific order and are not designed to be skipped or reordered.
+
+
+Where do you get your dependencies?
+
+Where do you get your project repositories from?
+From my company's private repository.
+
+In the context of Maven, private and public repositories refer to the location where Maven artifacts are stored and retrieved.
+
+A public repository is a Maven repository that is publicly accessible on the internet. The most well-known public Maven repository is the Maven Central Repository, which is maintained by the Apache Software Foundation.(https://mvnrepository.com/)
+The Maven Central Repository contains a vast number of open source Java libraries and can be accessed by anyone with an internet connection.
+
+A private repository, on the other hand, is a Maven repository that is not publicly accessible and is typically used by organizations to store their own proprietary Maven artifacts or third-party artifacts that are not available in public repositories.
+Private repositories can be hosted on-premises or in the cloud, and can be secured with authentication and access control mechanisms to ensure that only authorized users can access the artifacts stored in the repository.
+
+In a Maven project, you can specify the repositories that your project should use by adding repository elements to your project's pom.xml file. Maven will look for artifacts in the repositories specified in your pom.xml file in the order that they are listed. By default, Maven will use the Maven Central Repository as the first repository to search for artifacts. If you need to use artifacts from a private repository, you will need to add that repository to your pom.xml file so that Maven knows where to find the artifacts.
 
